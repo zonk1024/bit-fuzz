@@ -31,21 +31,15 @@ if not valid(target):
 print 'Possibilities for {}:'.format(target)
 
 for i in range(len(target)):
-    b = bin(int(hexlify(target[i]), 16))
-    for j in range(2, len(b)):
-        newchar = unhexlify(hex(int(b[0:j] + ('0', '1')[b[j]=='0'] + b[j+1:], 2))[2:])
-#        oldchar = b[j]
-        newword = target[0:i] + newchar + target[i+1:]
-        newword = newword.lower()
-        if valid(newword):
-            print newword
-#    print '"{}" "{}"'.format(bb, len(bb))
-#    for c in str(bin(b))[2:]:
-#        print c
-#    for i in range(len(bb)):
-#        if bb[i] == '0':
-#            print bb[0:i] + '1' + bb[i+1:], unhexlify(str('0b' + bb[0:i] + '1' + bb[i+1:]))
-#        else:
-#            print bb[0:i] + '0' + bb[i+1:]
-
-
+    if target[i] != '-':
+    # turns out there are no valid chars 1 bit away from '-'
+        b = bin(int(hexlify(target[i]), 16))
+        for j in range(2, len(b)):
+            newbit = ('0', '1')[b[j]=='0']
+            newchar_byte = b[0:j] + newbit + b[j+1:]
+            newchar_int = int(newchar_byte, 2)
+            newchar = chr(newchar_int)
+            newword = target[0:i] + newchar + target[i+1:]
+            newword = newword.lower()
+            if valid(newword):
+                print newword
